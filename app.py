@@ -455,4 +455,4 @@ for sprint_status in ['Finished', 'Not found', 'Active', 'Future']:
 # Run the app
 if __name__ == '__main__':
     print("Reading configuration...")
-    app.run_server(debug=True, port=9090)
+    app.run_server(host='0.0.0.0', debug=True, port=9090)
