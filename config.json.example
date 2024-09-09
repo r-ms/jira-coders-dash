@@ -1,0 +1,77 @@
+{
+    "jira_server": "https://oddsdotru.atlassian.net",
+    "jira_user": "m.rakutko@brlab.net",
+    "jira_token": "",
+    "board_id": 150,
+    "start_hour": 9,
+    "end_hour": 18,
+    "task_creation_start_date": "2024-01-01",
+    "task_creation_end_date": "2030-01-01",
+    "statuses_and_stages": {
+        "active_statuses": [
+            "FRONTEND IN DEVELOPMENT",
+            "BACKEND IN DEVELOPMENT",
+            "FRONTEND IN CODE REVIEW",
+            "BACKEND IN CODE REVIEW",
+            "FRONTEND IN CODE CORRECTIONS",
+            "BACKEND IN CODE CORRECTIONS",
+            "IN QA",
+            "IN DEMO",
+            "TESTING STAGE",
+            "TESTING PROD"
+        ],
+        "inactive_statuses": [
+            "READY FOR FRONTEND",
+            "FRONTEND PENDING DEVELOPMENT",
+            "FRONTEND PENDING CODE REVIEW",
+            "FRONTEND PENDING CORRECTIONS",
+            "READY FOR BACKEND",
+            "BACKEND PENDING DEVELOPMENT",
+            "BACKEND PENDING CODE REVIEW",
+            "BACKEND PENDING CORRECTIONS",
+            "READY FOR QA",
+            "READY FOR DEMO",
+            "READY FOR STAGE",
+            "READY FOR RELEASE"
+        ],
+        "stages": {
+            "design": [
+                "READY FOR DESIGN",
+                "DESIGN IN PROGRESS",
+                "DESIGN REVIEW",
+                "DESIGN ON APPROVAL"
+            ],
+            "frontend": [
+                "READY FOR FRONTEND",
+                "FRONTEND PENDING DEVELOPMENT",
+                "FRONTEND IN DEVELOPMENT",
+                "FRONTEND PENDING CODE REVIEW",
+                "FRONTEND IN CODE REVIEW",
+                "FRONTEND PENDING CORRECTIONS",
+                "FRONTEND IN CODE CORRECTIONS"
+            ],
+            "backend": [
+                "READY FOR BACKEND",
+                "BACKEND PENDING DEVELOPMENT",
+                "BACKEND IN DEVELOPMENT",
+                "BACKEND PENDING CODE REVIEW",
+                "BACKEND IN CODE REVIEW",
+                "BACKEND PENDING CORRECTIONS",
+                "BACKEND IN CODE CORRECTIONS"
+            ],
+            "testing": [
+                "PRE-QA MERGE",
+                "READY FOR QA",
+                "IN QA",
+                "READY FOR DEMO",
+                "TESTING STAGE",
+                "TESTING PROD",
+                "IN DEMO"
+            ],
+            "devops": [
+                "READY FOR STAGE",
+                "READY FOR RELEASE"
+            ]
+        }
+    }
+}
