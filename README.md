@@ -18,7 +18,7 @@ This project is a Dash application designed to analyze and visualize active work
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/r-ms/jira-coders-dash/
+   git clone https://github.com/r-ms/jira-coders-dash
    cd jira-coders-dash/
    ```
 

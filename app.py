@@ -139,7 +139,11 @@ def get_unique_intervals(time_intervals):
 
 @lru_cache(maxsize=50)
 def get_active_intervals(name, period_start_date, period_end_date):
-    df = persons[name].get_states()
+    df = jira_cache['persons'].get(name, None)
+    if not df:
+        return None
+    else:
+        df = df.get_states()
 
     # keep only tasks that fall into period of analysis
     df = df[(df.end_date > period_start_date) & (df.start_date < period_end_date)]
@@ -281,7 +285,6 @@ def get_active_tasks_report(name, period_start_date = None, period_end_date = No
 # Initialize the Dash app
 with open("config.json", "r") as f: cfg = json.load(f)
 jira_cache = Cache(directory=".cache")
-persons = jira_cache['persons']
 
 app = dash.Dash(__name__)
 
