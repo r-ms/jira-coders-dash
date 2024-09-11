@@ -5,6 +5,7 @@ from functools import lru_cache
 import json
 
 import dash
+import dash_bootstrap_components as dbc
 from dash import dcc, html, dash_table
 from dash.dash_table import FormatTemplate
 from dash.dependencies import Input, Output, State
@@ -286,7 +287,7 @@ def get_active_tasks_report(name, period_start_date = None, period_end_date = No
 with open("config.json", "r") as f: cfg = json.load(f)
 jira_cache = Cache(directory=".cache")
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 default_start_date = '2024-08-01T00:00:00'
 default_end_date = '2024-09-01T00:00:00'
@@ -348,66 +349,74 @@ app.layout = html.Div([
             display_format='YYYY-MM-DD'
         ),
     ], style={'margin-bottom': '20px'}),
-    
-    html.Div([
-        html.Div([
-            html.H3("Active Working Hours per Person"),
-            dash_table.DataTable(
-                id='table-active-hours',
-                columns=[{"name": col, "id": col, "type":"numeric", "format": active_hours_format.get(col, None)} for col in active_hours.columns],
-                row_selectable='single',
-                selected_rows=[0],
-                cell_selectable=False,
-                data=active_hours.to_dict('records'),
-                style_table={'margin-top': '20px', 'width': '100%'},  # Adjust table width
-                style_cell={
-                    'textAlign': 'left',
-                    'padding': '10px',
-                    'fontFamily': 'Arial',
-                    'fontSize': '14px',
-                    'whiteSpace': 'normal',
-                },
-                style_data={
-                    'width': '150px',
-                    'maxWidth': '150px',
-                    'minWidth': '50px',
-                },
-                style_header={
-                    'backgroundColor': 'lightgrey',
-                    'fontWeight': 'bold',
-                    'textAlign': 'left',
-                },
-                style_data_conditional=[
-                    #{'if': {'column_id': 'Hours'}, 'width': '100px', 'textAlign': 'right'},
-                    {
-                        'if': {
-                            'filter_query': '{active} > 0.5',  # Values greater than 80%
-                            'column_id': 'active'
+
+    dcc.Loading(
+        id="loading-spinner",
+        type="circle",  # You can choose "graph", "circle", or "dot"
+        overlay_style={"visibility":"visible", "filter": "blur(2px)"},
+        custom_spinner=html.H2(["Loading", dbc.Spinner(color="danger")]),
+        children=[
+            html.Div([
+                html.Div([
+                    html.H3("Active Working Hours per Person"),
+                    dash_table.DataTable(
+                        id='table-active-hours',
+                        columns=[{"name": col, "id": col, "type":"numeric", "format": active_hours_format.get(col, None)} for col in active_hours.columns],
+                        row_selectable='single',
+                        selected_rows=[0],
+                        cell_selectable=False,
+                        data=active_hours.to_dict('records'),
+                        style_table={'margin-top': '20px', 'width': '100%'},  # Adjust table width
+                        style_cell={
+                            'textAlign': 'left',
+                            'padding': '10px',
+                            'fontFamily': 'Arial',
+                            'fontSize': '14px',
+                            'whiteSpace': 'normal',
                         },
-                        'backgroundColor': '#28a745',
-                        'color': 'white'
-                    },
-                    {
-                        'if': {
-                            'filter_query': '{active} >= 0.25 && {active} <= 0.5',  # Values between 30% and 80%
-                            'column_id': 'active'
+                        style_data={
+                            'width': '150px',
+                            'maxWidth': '150px',
+                            'minWidth': '50px',
                         },
-                        'backgroundColor': '#ffc107',
-                        'color': 'black'
-                    },
-                    {
-                        'if': {
-                            'filter_query': '{active} < 0.25',  # Values less than 30%
-                            'column_id': 'active'
+                        style_header={
+                            'backgroundColor': 'lightgrey',
+                            'fontWeight': 'bold',
+                            'textAlign': 'left',
                         },
-                        'backgroundColor': '#dc3545',
-                        'color': 'white'
-                    }
-                ]
-            )
-        ], style={'flex': '1', 'padding-right': '20px'}),
-        create_task_tables()
-    ], style={'display': 'flex', 'justify-content': 'space-between'})
+                        style_data_conditional=[
+                            #{'if': {'column_id': 'Hours'}, 'width': '100px', 'textAlign': 'right'},
+                            {
+                                'if': {
+                                    'filter_query': '{active} > 0.5',  # Values greater than 80%
+                                    'column_id': 'active'
+                                },
+                                'backgroundColor': '#28a745',
+                                'color': 'white'
+                            },
+                            {
+                                'if': {
+                                    'filter_query': '{active} >= 0.25 && {active} <= 0.5',  # Values between 30% and 80%
+                                    'column_id': 'active'
+                                },
+                                'backgroundColor': '#ffc107',
+                                'color': 'black'
+                            },
+                            {
+                                'if': {
+                                    'filter_query': '{active} < 0.25',  # Values less than 30%
+                                    'column_id': 'active'
+                                },
+                                'backgroundColor': '#dc3545',
+                                'color': 'white'
+                            }
+                        ]
+                    )
+                ], style={'flex': '1', 'padding-right': '20px'}),
+                create_task_tables()
+            ], style={'display': 'flex', 'justify-content': 'space-between'})
+        ]
+    )
 ])
 
 # Callback to react to date pickers
